@@ -54,18 +54,24 @@ public class Main {
 	}
 
 	public Optional<Employee> findEmployeeByNumber(int employeeNumber) {
-		return employees.stream()
+		Optional<Employee> foundEmployee = employees.stream()
 				.filter(employee -> employee.getEmployeeNumber() == employeeNumber)
 				.findFirst();
+
+		if (!foundEmployee.isPresent()) {
+			System.out.println("Employee Number Does not Exist.");
+		}
+
+		return foundEmployee;
 	}
+
 
 	public static void main(String[] args) throws ParseException, IOException {
 		Main payrollSystem = new Main();
 		payrollSystem.loadEmployeeData("./data/MotorPH Employee Data.csv");
 
 		Scanner scanner = new Scanner(System.in);
-		GetEmployeeDetails employeeDetails = new GetEmployeeDetails();
-		CountWeeklyHours weeklyHours = new CountWeeklyHours();
+        CountWeeklyHours weeklyHours = new CountWeeklyHours();
 		ComputeMonthlySalary computeMonthlySalary = new ComputeMonthlySalary();
 		CountMonthlyHours monthlyHours = new CountMonthlyHours();
 		CheckInputEmpId checkInputEmpId = new CheckInputEmpId();
@@ -112,7 +118,9 @@ public class Main {
 				Optional<Employee> employee = payrollSystem.findEmployeeByNumber(employeeNumber);
 				if (employee.isPresent()) {
 					System.out.println(employee.get());
+
 				}
+
 
 			} else if (userInput.equals("2") == true) {
 				System.out.println();
@@ -146,15 +154,18 @@ public class Main {
 				computeMonthlySalary.computeMonthlySalary(inputEmpId);
 			} else if (userInput.equals("5") == true) {
 				System.out.println();
-				System.out.println("------------------------------------");
-				System.out.println("Thank you for using MotorPh Portal!");
-				break; // exit loop
+
+
 			}
 
 			System.out.printf("\n\nEnter Another Employee Number? Y/N: ");
 			answer = scanner.nextLine().trim();
-		} while (!answer.equals("5"));
+		} while (!answer.equalsIgnoreCase("N"));
+		System.out.println();
+		System.out.println("||===========================================||");
+		System.out.println("||    Thank you for using MotorPh Portal!    ||");
+		System.out.println("||===========================================||");
 
-		scanner.close(); // close scanner at the end
+
 	}
 }

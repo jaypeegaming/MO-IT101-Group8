@@ -179,10 +179,11 @@ public class CountMonthlyHours {
 		}else  if (userInputSubOption.equals("5") == true) {
 			System.out.println();
 			System.out.println("------------------------------------");
-			System.out.println("Thank you for using MotorPh Portal!"); 
+			System.out.println("Thank you for using MotorPh Portal!");
+
 		}
 		
-		scanner.close();
+
 		br.close();
 		
 	}

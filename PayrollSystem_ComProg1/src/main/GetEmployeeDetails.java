@@ -97,13 +97,14 @@ public class GetEmployeeDetails {
 			System.out.println("------------------------------------");
 			System.out.println("Thank you for using MotorPh Payroll!");
 
+
 //		System.out.println("SSS Number: " + sssList.get(empNumIndex));
 //		System.out.println("PhilHealth Number: " + philHealthList.get(empNumIndex));
 //		System.out.println("Pag-Ibig Number: " + pagIbigList.get(empNumIndex));
 //		System.out.println("Tin Number: " + tinList.get(empNumIndex));
 
 
-			scanner.close();
+
 			br.close();
 
 		}

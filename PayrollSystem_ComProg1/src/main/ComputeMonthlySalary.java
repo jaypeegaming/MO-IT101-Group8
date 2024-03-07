@@ -213,9 +213,10 @@ public class ComputeMonthlySalary {
 				System.out.println();
 				System.out.println("------------------------------------");
 				System.out.println("Thank you for using MotorPh Portal!");
+
 			}
 			
-			scanner.close();
+
 			br.close();
 		
 		
