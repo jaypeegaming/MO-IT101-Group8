@@ -35,7 +35,7 @@ public class Employee {
      * @param grossSemiMonthlyRate The gross semi-monthly rate of the employee.
      * @param hourlyRate          The hourly rate of the employee.
      */
-
+    // Employee details
     private int employeeNumber;
     private String lastName;
     private String firstName;
@@ -49,6 +49,8 @@ public class Employee {
     private String pagIbig;
     private String position;
     private String immediateSupervisor;
+
+    // Salary details
     private BigDecimal basicSalary;
     private BigDecimal riceSubsidy;
     private BigDecimal phoneAllowance;
@@ -56,7 +58,11 @@ public class Employee {
     private BigDecimal grossSemiMonthlyRate;
     private BigDecimal hourlyRate;
 
+    // Constructor to initialize an Employee object with provided CSV data
+
+
     public Employee(int employeeNumber, String lastName, String firstName, String birthday, String address,String phoneNumber, String status, String tin, String sss, String philhealth, String pagIbig, String position, String immediateSupervisor, BigDecimal basicSalary, BigDecimal riceSubsidy, BigDecimal phoneAllowance, BigDecimal clothingAllowance, BigDecimal grossSemiMonthlyRate, BigDecimal hourlyRate) {
+        // Initializing member variables with provided values
         this.employeeNumber = employeeNumber;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -82,33 +88,25 @@ public class Employee {
 
     }
 
-
-    //Getters
+    // Getter for employee number
     public int getEmployeeNumber() {
         return employeeNumber;
     }
-    /**
-     * Retrieves the full name of the employee.
-     *
-     * @return The full name of the employee in the format "lastName, firstName".
-     */
+
+    // Method to retrieve full name of the employee
     public String getFullName() {
         return lastName + ", " + firstName;
     }
 
+    // Getter for birthday
     public String getBirthday() {
         return birthday;
     }
 
-
-
-
+    // toString method to represent Employee object as a string
     @Override
     public String toString() {
-
-
-
-
+        // Building formatted string containing employee information
         return String.format("%-40s%-40s%-40s\n",
                 "\nEmployee Information:",
                 "Government Mandatory Benefits:",
@@ -118,7 +116,7 @@ public class Employee {
                         "TIN: " + tin,
                         "Gross Semi-monthly Rate: " + grossSemiMonthlyRate) +
                 String.format("%-40s%-40s%-40s\n",
-                        "Name: " + getFullName() ,
+                        "Name: " + getFullName(),
                         "SSS: " + sss,
                         "Hourly Rate: " + hourlyRate) +
                 String.format("%-40s%-40s%-40s\n",
@@ -146,9 +144,5 @@ public class Employee {
                         "Immediate Supervisor: " + immediateSupervisor,
                         "",
                         "");
-
-
-
-
     }
 }

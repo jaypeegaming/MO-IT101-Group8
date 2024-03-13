@@ -1,3 +1,5 @@
+// Import statements
+
 package main;
 
 import java.io.BufferedReader;
@@ -7,65 +9,51 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+// Class declaration
+
 public class GetEmployeeDetails {
+	// Method to get details of a specific employee
 	public void getEmployeeDetails(String inputEmpId) throws IOException, ParseException {
+		// Open file for reading
 		FileReader fr = new FileReader("./data/MotorPH Employee Data.csv");
 		BufferedReader br = new BufferedReader(fr);
+
+		// Create instances of necessary classes
 		CountWeeklyHours weeklyHours = new CountWeeklyHours();
 		ComputeMonthlySalary monthlySalary = new ComputeMonthlySalary();
 		CountMonthlyHours monthlyHours = new CountMonthlyHours();
 		String line;
 
-		//instantiate lists
+		// Lists to store employee details
 		ArrayList<String> empNumList = new ArrayList<String>();
 		ArrayList<String> nameList = new ArrayList<String>();
 		ArrayList<String> birthdayList = new ArrayList<String>();
-//		ArrayList<String> sssList = new ArrayList<String>();
-//		ArrayList<String> philHealthList = new ArrayList<String>();
-//		ArrayList<String> pagIbigList = new ArrayList<String>();
-//		ArrayList<String> tinList = new ArrayList<String>();
 
-		// if line is not null, split each row element by comma
+		// Read file line by line and populate lists with employee details
 		while ((line = br.readLine()) != null) {
-			//comma as separators
+			// Split line by comma
 			String[] cols = line.split(",");
-			//System.out.println("Employee Number: " + cols[0]+" ; "+"Employee Name: "+cols[1]+", "+cols[2]+" ; "+"Birthday: "+cols[3]);
 
-			//place all employee number in one list
+			// Extract employee number and add to list
 			String empNum = cols[0];
 			empNumList.add(empNum.trim());
-			//place all employee name in one list
+
+			// Extract employee name and add to list
 			String name = (cols[1] + ", " + cols[2]);
 			nameList.add(name.trim());
-			//place all birthday in one list
+
+			// Extract employee birthday and add to list
 			String birthday = cols[3];
 			birthdayList.add(birthday.trim());
-//			//place all sss number in one list
-//			String sssNum = cols[6];
-//			sssList.add(sssNum.trim());
-//			//place all philHealth number in one list
-//			String philHealthNum = cols[7];
-//			philHealthList.add(philHealthNum.trim());
-//			//place all pagIbig number in one list
-//			String pagIbigNum = cols[9];
-//			pagIbigList.add(pagIbigNum.trim());
-//			//place all tin in one list
-//			String tinNum = cols[8];
-//			tinList.add(tinNum.trim());
-
-
 		}
-		//to show output of each list
-		//System.out.println(empNumList);
-		//System.out.println(nameList);
-		//System.out.println(birthdayList);
 
-		//search index of user input's employee number in the empNumList
-
-		// ask for user input
+		// Create scanner object to get user input
 		Scanner scanner = new Scanner(System.in);
 
+		// Find index of input employee ID in employee number list
 		int empNumIndex = empNumList.indexOf(inputEmpId);
+
+		// Display employee details
 		System.out.println();
 		System.out.println("------------------------------------");
 		System.out.println();
@@ -73,41 +61,39 @@ public class GetEmployeeDetails {
 		System.out.println("Employee Name: " + nameList.get(empNumIndex));
 		System.out.println("Employee Birthday: " + birthdayList.get(empNumIndex));
 		System.out.println();
-		System.out.println(". . . . . . . . . . . . . . . . . . .");
-		System.out.println();
-		System.out.println("Sub-Menu: ");
-		System.out.println("1. Compute for this employee's Weekly Hours & Weekly Salary");
-		System.out.println("2. Compute for this employee's Monthly Hours");
-		System.out.println("3. Compute Net Monthly Salary");
-		System.out.println("4. Go back to Main menu");
-		System.out.println("5. None");
+		System.out.println(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+		System.out.println(".												  				.");
+		System.out.println("	Sub-Menu: 													.");
+		System.out.println(".	1. Compute for this employee's Weekly Hours & Weekly Salary	.");
+		System.out.println(".	2. Compute for this employee's Monthly Hours				.");
+		System.out.println(".	3. Compute Net Monthly Salary								.");
+		System.out.println(".	4. Go back to Main menu										.");
+		System.out.println(".	5. None														.");
+		System.out.println(".																.");
+		System.out.println(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
 		System.out.println();
 		System.out.print("Please enter your choice: ");
 		String userInputSubOption = scanner.nextLine();
+
+		// Perform actions based on user input
 		if (userInputSubOption.equals("1") == true) {
+			// Compute weekly hours and salary
 			weeklyHours.countWeeklyHours(inputEmpId);
 		} else if (userInputSubOption.equals("2") == true) {
+			// Compute monthly hours
 			monthlyHours.countMonthlyHours(inputEmpId);
 		} else if (userInputSubOption.equals("3") == true) {
+			// Compute net monthly salary
 			monthlySalary.computeMonthlySalary(inputEmpId);
 		} else if (userInputSubOption.equals("4") == true) {
+			// Go back to main menu
 			Main.main(null);
 		} else if (userInputSubOption.equals("5")) {
+			// Display thank you message and close buffered reader
 			System.out.println();
 			System.out.println("------------------------------------");
 			System.out.println("Thank you for using MotorPh Payroll!");
-
-
-//		System.out.println("SSS Number: " + sssList.get(empNumIndex));
-//		System.out.println("PhilHealth Number: " + philHealthList.get(empNumIndex));
-//		System.out.println("Pag-Ibig Number: " + pagIbigList.get(empNumIndex));
-//		System.out.println("Tin Number: " + tinList.get(empNumIndex));
-
-
-
 			br.close();
-
 		}
-
 	}
 }
