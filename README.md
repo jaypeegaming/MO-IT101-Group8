@@ -1,6 +1,6 @@
 
 
-# MO-IT101-Group8 | H1101
+# MO-IT101-Group8 | H1101 - Terminal Assessment Output
 Group Member :
 1.	Hussian Rosalejos
 2.	Nikki Rivadeneira
