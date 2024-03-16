@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ * The Main class represents the main entry point of the MotorPh Employee Portal.
+ * It provides functionality to load employee data from a file, search for employees by their employee number,
+ * and perform various operations on the employee data such as calculating weekly hours, monthly hours, and net monthly salary.
+ */
 public class Main {
 
 	private List<Employee> employees = new ArrayList<>();// List to store all employee information
@@ -38,10 +43,10 @@ public class Main {
 							values[9].trim(),
 							values[11].trim(),
 							values[12].trim(),
-							new BigDecimal(values[13].trim()),
-							new BigDecimal(values[14].trim()),
-							new BigDecimal(values[15].trim()),
-							new BigDecimal(values[16].trim()),
+							new Double(values[13].trim()),
+							new Double(values[14].trim()),
+							new Double(values[15].trim()),
+							new Double(values[16].trim()),
 							new BigDecimal(values[17].trim()),
 							new BigDecimal(values[18].trim())
 					);
@@ -54,6 +59,7 @@ public class Main {
 			System.err.println("Error loading employee data: " + e.getMessage());
 		}
 	}
+
 	// Method to find and return an employee by their employee number
 	public Optional<Employee> findEmployeeByNumber(int employeeNumber) {
 		Optional<Employee> foundEmployee = employees.stream()
@@ -67,23 +73,19 @@ public class Main {
 		return foundEmployee;
 	}
 
-
 	public static void main(String[] args) throws ParseException, IOException {
 		Main payrollSystem = new Main();
 		payrollSystem.loadEmployeeData("./data/MotorPH Employee Data.csv");// Load employee data
 
 		Scanner scanner = new Scanner(System.in);// Initialize Scanner for user input
-		CountWeeklyHours weeklyHours = new CountWeeklyHours();
-		// Instantiate a CountWeeklyHours object
-		ComputeMonthlySalary computeMonthlySalary = new ComputeMonthlySalary();
-		// Instantiate a ComputeMonthlySalary object
-		CountMonthlyHours monthlyHours = new CountMonthlyHours();
-		// Instantiate a CountMonthlyHours object
-		CheckInputEmpId checkInputEmpId = new CheckInputEmpId();
-//		Main main = new Main(); Instantiate a CheckInputEmpId object
+		CountWeeklyHours weeklyHours = new CountWeeklyHours(); // Instantiate a CountWeeklyHours object
+		ComputeMonthlySalary computeMonthlySalary = new ComputeMonthlySalary(); // Instantiate a ComputeMonthlySalary object
+		CountMonthlyHours monthlyHours = new CountMonthlyHours(); // Instantiate a CountMonthlyHours object
+		CheckInputEmpId checkInputEmpId = new CheckInputEmpId(); // Instantiate a CheckInputEmpId object
 
 		String answer = ""; // Initialize answer with an empty string
-// Main loop for user interface
+
+		// Main loop for user interface
 		do {
 			System.out.println();
 			System.out.println("||===========================================||");
@@ -95,11 +97,10 @@ public class Main {
 			System.out.println("2. Get Weekly Hours & Weekly Salary");
 			System.out.println("3. Get Monthly Hours");
 			System.out.println("4. Compute Net Monthly Salary");
-			System.out.println("5. None");
+			System.out.println("5. Exit");
 			System.out.println();
 			System.out.print("Please enter your choice: ");
 			String userInput = scanner.nextLine();
-
 
 			do {
 				// Actions based on user input
@@ -126,10 +127,7 @@ public class Main {
 					Optional<Employee> employee = payrollSystem.findEmployeeByNumber(employeeNumber);
 					if (employee.isPresent()) {
 						System.out.println(employee.get());
-
 					}
-
-
 				} else if (userInput.equals("2") == true) {
 					// Action for option 2 (Get Weekly Hours & Weekly Salary)
 					// Get employee number and calculate weekly hours and salary
@@ -167,25 +165,24 @@ public class Main {
 					inputEmpId = checkedInput;
 					computeMonthlySalary.computeMonthlySalary(inputEmpId);
 				} else if (userInput.equals("5") == true) {
-					// Action for option 5 (None)
+					// Action for option 5 (Exit)
 					// Do nothing (Exit the loop)
 					System.out.println();
-
-
 				}
 
 				System.out.printf("\n\nEnter Another Employee Number? Y/N: ");
 				answer = scanner.nextLine().trim();
 			} while (!answer.equalsIgnoreCase("N"));
-			System.out.println();
-			System.out.println("||===========================================||");
-			System.out.println("||    Thank you for using MotorPh Portal!    ||");
-			System.out.println("||===========================================||");
 
+			// Ask the user if they want to return to the main menu
 			System.out.print("\n\nDo you want to return to the Main Menu? Y/N: ");
 			answer = scanner.nextLine().trim();
 		} while (answer.equalsIgnoreCase("Y"));
 
+		// Display farewell message
+		System.out.println();
+		System.out.println("||===========================================||");
+		System.out.println("||    Thanks Again for using MotorPh Portal! ||");
+		System.out.println("||===========================================|	|");
 	} // End of Main class
-
 }

@@ -1,67 +1,42 @@
 package main;
+
 import java.math.BigDecimal;
 
-
-
-
+/**
+ * The Employee class represents an employee in the MotorPh Employee Portal.
+ * It stores various information about an employee such as personal details, salary details, and contact information.
+ * This class provides methods to access and manipulate employee data.
+ *
+ * @author Group 8
+ */
 public class Employee {
-
 
     // Member variables representing employee information
 
     /**
      * Constructor to initialize an Employee object with provided CSV data.
      *
-     * @author Group 8
-     *
-     *
-     * @param employeeNumber      The unique identifier for the employee.
-     * @param lastName            The last name of the employee.
-     * @param firstName           The first name of the employee.
-     * @param birthday            The birthday of the employee.
-     * @param address             The address of the employee.
-     * @param phoneNumber         The Phone number of the employee
-     * @param status              The employment status of the employee.
-     * @param tin                 The Tax Identification Number (TIN) of the employee.
-     * @param sss                 The Social Security System (SSS) number of the employee.
-     * @param philhealth          The PhilHealth number of the employee.
-     * @param pagIbig             The Pag-IBIG Fund (HDMF) number of the employee.
-     * @param position            The position or job title of the employee.
-     * @param immediateSupervisor The immediate supervisor of the employee.
-     * @param basicSalary         The basic salary of the employee.
-     * @param riceSubsidy         The rice subsidy received by the employee.
-     * @param phoneAllowance      The phone allowance received by the employee.
-     * @param clothingAllowance   The clothing allowance received by the employee.
-     * @param grossSemiMonthlyRate The gross semi-monthly rate of the employee.
-     * @param hourlyRate          The hourly rate of the employee.
+     * @param employeeNumber         The unique identifier for the employee.
+     * @param lastName               The last name of the employee.
+     * @param firstName              The first name of the employee.
+     * @param birthday               The birthday of the employee.
+     * @param address                The address of the employee.
+     * @param phoneNumber            The Phone number of the employee.
+     * @param status                 The employment status of the employee.
+     * @param tin                    The Tax Identification Number (TIN) of the employee.
+     * @param sss                    The Social Security System (SSS) number of the employee.
+     * @param philhealth             The PhilHealth number of the employee.
+     * @param pagIbig                The Pag-IBIG Fund (HDMF) number of the employee.
+     * @param position               The position or job title of the employee.
+     * @param immediateSupervisor    The immediate supervisor of the employee.
+     * @param basicSalary            The basic salary of the employee.
+     * @param riceSubsidy            The rice subsidy received by the employee.
+     * @param phoneAllowance         The phone allowance received by the employee.
+     * @param clothingAllowance      The clothing allowance received by the employee.
+     * @param grossSemiMonthlyRate  The gross semi-monthly rate of the employee.
+     * @param hourlyRate             The hourly rate of the employee.
      */
-    // Employee details
-    private int employeeNumber;
-    private String lastName;
-    private String firstName;
-    private String birthday;
-    private String address;
-    private String phoneNumber;
-    private String status;
-    private String tin;
-    private String sss;
-    private String philhealth;
-    private String pagIbig;
-    private String position;
-    private String immediateSupervisor;
-
-    // Salary details
-    private BigDecimal basicSalary;
-    private BigDecimal riceSubsidy;
-    private BigDecimal phoneAllowance;
-    private BigDecimal clothingAllowance;
-    private BigDecimal grossSemiMonthlyRate;
-    private BigDecimal hourlyRate;
-
-    // Constructor to initialize an Employee object with provided CSV data
-
-
-    public Employee(int employeeNumber, String lastName, String firstName, String birthday, String address,String phoneNumber, String status, String tin, String sss, String philhealth, String pagIbig, String position, String immediateSupervisor, BigDecimal basicSalary, BigDecimal riceSubsidy, BigDecimal phoneAllowance, BigDecimal clothingAllowance, BigDecimal grossSemiMonthlyRate, BigDecimal hourlyRate) {
+    public Employee(int employeeNumber, String lastName, String firstName, String birthday, String address, String phoneNumber, String status, String tin, String sss, String philhealth, String pagIbig, String position, String immediateSupervisor, double basicSalary, double riceSubsidy, double phoneAllowance, double clothingAllowance, BigDecimal grossSemiMonthlyRate, BigDecimal hourlyRate) {
         // Initializing member variables with provided values
         this.employeeNumber = employeeNumber;
         this.lastName = lastName;
@@ -84,9 +59,29 @@ public class Employee {
         this.hourlyRate = hourlyRate;
     }
 
-    public Employee() {
+    // Member variables representing employee details
 
-    }
+    private int employeeNumber;
+    private String lastName;
+    private String firstName;
+    private String birthday;
+    private String address;
+    private String phoneNumber;
+    private String status;
+    private String tin;
+    private String sss;
+    private String philhealth;
+    private String pagIbig;
+    private String position;
+    private String immediateSupervisor;
+
+    // Member variables representing salary details
+    private double basicSalary;
+    private double riceSubsidy;
+    private double phoneAllowance;
+    private double clothingAllowance;
+    private BigDecimal grossSemiMonthlyRate;
+    private BigDecimal hourlyRate;
 
     // Getter for employee number
     public int getEmployeeNumber() {

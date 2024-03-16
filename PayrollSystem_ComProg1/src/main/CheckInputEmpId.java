@@ -7,68 +7,46 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CheckInputEmpId {
-	// Method to validate and check the input employee ID
+
+	// Method to check if the input employee ID is valid
 	public String checkInputEmpId(String inputEmpId) throws IOException {
-		// FileReader and BufferedReader for reading employee data
+
+		// FileReader and BufferedReader for reading the employee data file
 		FileReader fr = new FileReader("./data/MotorPH Employee Data.csv");
 		BufferedReader br = new BufferedReader(fr);
-
-		// Instance of CountWeeklyHours class
 		CountWeeklyHours weeklyHours = new CountWeeklyHours();
-
-		// Variables
 		String line;
+
+		// Instantiate a list to store employee numbers
 		ArrayList<String> empNumList = new ArrayList<String>();
 
-		// Read the employee data and store employee numbers in a list
+		// Read each line of the employee data file
 		while ((line = br.readLine()) != null) {
+			// Split each row by comma
 			String[] cols = line.split(",");
+
+			// Place all employee numbers in the list
 			String empNum = cols[0];
 			empNumList.add(empNum.trim());
 		}
 
-		// Scanner for user input
-		Scanner scanner = new Scanner(System.in);
-
-		// Validate user input employee ID
+		// Get user input
 		String userInput = inputEmpId;
-		userInput = userInput.replaceAll("[^\\d.]", "0");
-		int inputInt = Integer.parseInt(userInput);
 
-		// Get the range of valid employee numbers
+		// Determine the range of valid employee numbers for display purposes
 		String firstEmpNum = empNumList.get(1);
 		int firstEmpNumInt = Integer.parseInt(firstEmpNum);
 		String lastEmpNum = empNumList.get(empNumList.size() - 1);
 		int lastEmpNumInt = Integer.parseInt(lastEmpNum);
 
-		// Check if the input employee ID is valid
-		if (userInput.length() != 5) {
-			while (userInput.length() != 5) {
-				System.out.println();
-				System.out.print("Please enter a five digit Employee number\n(Choose from: " + firstEmpNum + "-" + lastEmpNum + "): ");
-				userInput = scanner.nextLine();
-				userInput = userInput.replaceAll("[^\\d.]", "0");
-				inputInt = Integer.parseInt(userInput);
-			}
+		Scanner scanner = new Scanner(System.in);
+
+		// Validate user input against the list of employee numbers
+		while (empNumList.indexOf(userInput) < 0) {
+			System.out.print("\nInput is not a valid Employee Number\n(Choose from: " + firstEmpNum + "-" + lastEmpNum + "): ");
+			userInput = scanner.nextLine();
 		}
 
-		if (userInput.length() == 5) {
-			while ((inputInt < firstEmpNumInt) || inputInt > lastEmpNumInt) {
-				System.out.println();
-				System.out.print("Input is not a valid Employee Number\n(Choose from: " + firstEmpNum + "-" + lastEmpNum + "): ");
-				userInput = scanner.nextLine();
-				userInput = userInput.replaceAll("[^\\d.]", "0");
-				inputInt = Integer.parseInt(userInput);
-			}
-		}
-
-		// Get the index of the validated input employee ID and return it
-		int empNumIndex = empNumList.indexOf(userInput);
-		String checkedInputEmpId = empNumList.get(empNumIndex);
-
-		// Close BufferedReader
-		br.close();
-
-		return checkedInputEmpId;
+		return userInput;
 	}
 }

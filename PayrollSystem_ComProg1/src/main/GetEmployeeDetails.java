@@ -19,6 +19,7 @@ public class GetEmployeeDetails {
 		BufferedReader br = new BufferedReader(fr);
 
 		// Create instances of necessary classes
+
 		CountWeeklyHours weeklyHours = new CountWeeklyHours();
 		ComputeMonthlySalary monthlySalary = new ComputeMonthlySalary();
 		CountMonthlyHours monthlyHours = new CountMonthlyHours();

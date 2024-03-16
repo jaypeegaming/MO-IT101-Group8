@@ -13,9 +13,13 @@ import java.util.Scanner;
 
 public class CountWeeklyHours {
 
+	// Method to count weekly hours for an employee
 	public void countWeeklyHours(String inputEmpId) throws ParseException, IOException {
-		FileReader fr = new FileReader ("./data/AttendanceRecordv3.csv");
-		BufferedReader br = new BufferedReader (fr);
+		// FileReader and BufferedReader for reading the attendance record
+		FileReader fr = new FileReader("./data/AttendanceRecordv3.csv");
+		BufferedReader br = new BufferedReader(fr);
+
+		// Instances of other classes for various functionalities
 		ComputeMonthlySalary monthlySalary = new ComputeMonthlySalary();
 		GetSalaryRates salaryRate = new GetSalaryRates();
 		GetCalendarDates calendarDates = new GetCalendarDates();
@@ -24,7 +28,7 @@ public class CountWeeklyHours {
 		String line;
 		int totalHours = 0;
 
-		//instantiate lists
+		//instantiate lists to store attendance records
 		ArrayList<String> empNumList = new ArrayList<String>();
 		ArrayList<String> dateList = new ArrayList<String>();
 		ArrayList<Date> timeInList = new ArrayList<Date>();
@@ -32,19 +36,19 @@ public class CountWeeklyHours {
 
 		DateFormat sdfTime = new SimpleDateFormat("HH:mm");
 
+		// Read the header line of the CSV file
 		br.readLine();
-		// if line is not null, split each row element by comma
+
+		// Process each line of the CSV file
 		while ((line = br.readLine()) != null) {
-			//comma as separators
+			// Split each row by comma
 			String[] cols = line.split(",");
-//			System.out.println("Employee Number: " + cols[0]+" ; Date: "+cols[1]+" ; Time In: "+cols[2]+" ; Time Out: "+cols[3]);
 
 			//place all employee number in one list
 			String empNum = cols[0];
 			empNumList.add(empNum.trim());
 			//place all date in one list
 			String dateString = cols[1];
-//			Date date = sdfDate.parse(dateString);
 			dateList.add(dateString.trim());
 			//place all time in in one list
 			String timeInString = cols[2];
@@ -52,40 +56,40 @@ public class CountWeeklyHours {
 			timeInList.add(timeIn);
 			//place all timeout in one list
 			String timeOutString = cols[3];
-			Date timeOut  = sdfTime.parse(timeOutString.trim());
+			Date timeOut = sdfTime.parse(timeOutString.trim());
 			timeOutList.add(timeOut);
-
 		}
 
-		Scanner scanner = new Scanner (System.in);
-//		System.out.print("Enter EmpID: ");
-//		String inputEmpId = scanner.nextLine();
-		///////////////////////////////////////////////
-//		System.out.println();
-//		System.out.println(". . . . . . . . . . . . . . . . . . .");
-//		System.out.println();
-//		System.out.println("Options:");
-//		System.out.println("1. Week starting Sept. 19, 2022");
-//		System.out.println("2. Week starting Sept. 26, 2022");
-//		System.out.println();
-//		System.out.print("Enter the number of your choice: ");
-//		String inputWeekStart = scanner.nextLine();
-//		if (inputWeekStart.equals("1") == true) {
-//			String [] weekDays = {
-//					"19/09/2022",
-//					"20/09/2022",
-//					"21/09/2022",
-//					"22/09/2022",
-//					"23/09/2022"};
-		/////////////////////////////////////////////
-		System.out.println();
-		System.out.println(". . . . . . . . . . . . . . . . . . .");
-		System.out.println();
-		System.out.println("Please enter the date you \nwant to be included (ex. 25/12/2022):");
-		String inputDate = scanner.nextLine();
-		ArrayList<String> weekDays = calendarDates.getDatesOfTheWeek(inputDate);
+		// Scanner for user input
+		Scanner scanner = new Scanner(System.in);
 
-		System.out.println();
+		// Prompt user for input date
+		String userInputDate;
+		Date inputDate = null;
+		boolean validDate = false;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+		do {
+			System.out.println();
+			System.out.println(". . . . . . . . . . . . . . . . . . .");
+			System.out.println();
+			System.out.println("Please enter the date you \nwant to be included (ex. 25/12/2022):");
+			userInputDate = scanner.nextLine();
+
+			try {
+				// Parse the input date
+				inputDate = dateFormat.parse(userInputDate);
+				validDate = true;
+			} catch (ParseException e) {
+				System.out.println("Invalid date format or value. Please follow the format dd/mm/yyyy and ensure the date is valid.");
+			}
+		} while (!validDate);
+
+		// Convert inputDate to a String before passing it to getDatesOfTheWeek() method
+		String inputDateString = dateFormat.format(inputDate);
+		ArrayList<String> weekDays = calendarDates.getDatesOfTheWeek(inputDateString);
+
+		// Variable to keep track of iteration count
 		int z = 0;
 		int minutes = 0;
 		int hours = 0;
@@ -93,119 +97,111 @@ public class CountWeeklyHours {
 		String remarks;
 		Date timeInDefault = sdfTime.parse("08:00");
 
+		// Display table header
 		System.out.println("------------------------------------");
 		System.out.println("Employee ID     Date           Time In     Time Out     Hours Rendered      Remarks");
 
+		// Loop through the attendance records and calculate weekly hours
 		do {
-
-			for ( int i = 0; i < empNumList.size() & z < 7; i++) {
+			for (int i = 0; i < empNumList.size() & z < 7; i++) {
 				Boolean empIdBoolean = inputEmpId.equals(empNumList.get(i));
 				Boolean dateBoolean = weekDays.get(z).equals(dateList.get(i));
-				if (empIdBoolean == true && dateBoolean == true) {
+				if (empIdBoolean && dateBoolean) {
 					z++;
-
 					Date timeOutChoice = timeOutList.get(i);
 					Date timeInChoice = timeInList.get(i);
-					if (timeInChoice.getTime() < 0 ) {
+					if (timeInChoice.getTime() < 0) {
 						dailyHoursRendered = 0;
 						totalHours += 0;
 						remarks = " - Absent";
-					}
-					else if (timeInChoice.getTime() > 900000 ) {
+					} else if (timeInChoice.getTime() > 900000) {
 						dailyHoursRendered = (timeOutChoice.getTime() - timeInChoice.getTime());
-						if(dailyHoursRendered > (5*1000*60*60)){
-							totalHours += dailyHoursRendered - (1*1000*60*60);
-						}else {
+						if (dailyHoursRendered > (5 * 1000 * 60 * 60)) {
+							totalHours += dailyHoursRendered - (1 * 1000 * 60 * 60);
+						} else {
 							totalHours += dailyHoursRendered;
 						}
 						remarks = "- Late";
 					} else {
 						dailyHoursRendered = (timeOutChoice.getTime() - timeInDefault.getTime());
-						if(dailyHoursRendered > (5*1000*60*60)){
-							totalHours += dailyHoursRendered - (1*1000*60*60);
-						}else {
+						if (dailyHoursRendered > (5 * 1000 * 60 * 60)) {
+							totalHours += dailyHoursRendered - (1 * 1000 * 60 * 60);
+						} else {
 							totalHours += dailyHoursRendered;
 						}
 						remarks = " - OK";
 					}
 
-					if(dailyHoursRendered > (5*1000*60*60) ){
-						long minutesRendered = (dailyHoursRendered / (1000*60)) % 60;
-						long hoursRendered = ((dailyHoursRendered / (1000*60*60)))-1;
+					if (dailyHoursRendered > (5 * 1000 * 60 * 60)) {
+						long minutesRendered = (dailyHoursRendered / (1000 * 60)) % 60;
+						long hoursRendered = ((dailyHoursRendered / (1000 * 60 * 60))) - 1;
 						String timeOutChoiceString = sdfTime.format(timeOutChoice);
 						String timeInChoiceString = sdfTime.format(timeInChoice);
 
-						System.out.println(empNumList.get(i) + "           "+dateList.get(i)+"     "+timeInChoiceString+"       "+timeOutChoiceString+"        "+hoursRendered+"Hrs. "+minutesRendered+"mins.       "+remarks);
-					}
-					else {
-						long minutesRendered = (dailyHoursRendered / (1000*60)) % 60;
-						long hoursRendered = ((dailyHoursRendered / (1000*60*60)));
+						System.out.println(empNumList.get(i) + "           " + dateList.get(i) + "     " + timeInChoiceString + "       " + timeOutChoiceString + "        " + hoursRendered + "Hrs. " + minutesRendered + "mins.       " + remarks);
+					} else {
+						long minutesRendered = (dailyHoursRendered / (1000 * 60)) % 60;
+						long hoursRendered = ((dailyHoursRendered / (1000 * 60 * 60)));
 						String timeOutChoiceString = sdfTime.format(timeOutChoice);
 						String timeInChoiceString = sdfTime.format(timeInChoice);
 
-						System.out.println(empNumList.get(i) + "           "+dateList.get(i)+"     "+timeInChoiceString+"       "+timeOutChoiceString+"        "+hoursRendered+"Hrs. "+minutesRendered+"mins.       "+remarks);
+						System.out.println(empNumList.get(i) + "           " + dateList.get(i) + "     " + timeInChoiceString + "       " + timeOutChoiceString + "        " + hoursRendered + "Hrs. " + minutesRendered + "mins.       " + remarks);
 					}
-
-
-				} else {
-
 				}
-
 			}
 			z++;
 			continue;
-		} while (dateList.indexOf(weekDays.get(0)) < 0 && (z <7));
+		} while (dateList.indexOf(weekDays.get(0)) < 0 && (z < 7));
 
-		minutes = (totalHours / (1000*60)) % 60;
-		hours = (totalHours / (1000*60*60));
+		// Calculate total weekly hours
+		minutes = (totalHours / (1000 * 60)) % 60;
+		hours = (totalHours / (1000 * 60 * 60));
 		System.out.println();
-		System.out.println("Total Weekly Hours:      "+hours+"Hrs. "+minutes+"mins. ");
-		String hourlyRate = salaryRate.getHourlyRate(inputEmpId);
-		System.out.println("Hourly Rate:             "+hourlyRate);
+		System.out.println("Total Weekly Hours:      " + hours + "Hrs. " + minutes + "mins. ");
 
+		// Get hourly rate for the employee
+		String hourlyRate = salaryRate.getHourlyRate(inputEmpId);
+		System.out.println("Hourly Rate:             " + hourlyRate);
+
+		// Calculate total weekly salary
 		double hourlyRateDouble = Double.parseDouble(hourlyRate);
-		double weeklySalary = (hours + (minutes/60))*hourlyRateDouble;
+		double weeklySalary = (hours + (minutes / 60)) * hourlyRateDouble;
 		DecimalFormat formatter = new DecimalFormat("#,###.00");
 		System.out.println("                       -------------");
-		System.out.println("Total weekly salary:     "+formatter.format(weeklySalary));
+		System.out.println("Total weekly salary:     " + formatter.format(weeklySalary));
 
-
-
-
+		// Display sub-menu options
 		System.out.println();
 		System.out.println(". . . . . . . . . . . . . . . . . . . . . . . . . . .");
-		System.out.println(".												  	.");
-		System.out.println(".	Sub-Menu: 										.");
-		System.out.println(".	1. View Basic Details							.");
-		System.out.println(".	2. Compute for this employee's Monthly Hours	.");
-		System.out.println(".	3. Compute Net Monthly Salary					.");
-		System.out.println(".	4. Go back to Main menu							.");
-		System.out.println(".	5. None											.");
-		System.out.println(".                                                   .");
+		System.out.println(".                                                .");
+		System.out.println(".    Sub-Menu:                                   .");
+		System.out.println(".    1. View Basic Details                       .");
+		System.out.println(".    2. Compute for this employee's Monthly Hours.");
+		System.out.println(".    3. Compute Net Monthly Salary               .");
+		System.out.println(".    4. Go back to Main menu                     .");
+		System.out.println(".    5. Exit                                     .");
+		System.out.println(".                                                .");
 		System.out.println(". . . . . . . . . . . . . . . . . . . . . . . . . . . ");
 		System.out.println();
 		System.out.print("Please enter your choice: ");
 		String userInputSubOption = scanner.nextLine();
-		if (userInputSubOption.equals("1") == true) {
+		if (userInputSubOption.equals("1")) {
 			employeeDetails.getEmployeeDetails(inputEmpId);
-		}else if (userInputSubOption.equals("2") == true) {
+		} else if (userInputSubOption.equals("2")) {
 			monthlyHours.countMonthlyHours(inputEmpId);
-		}else if (userInputSubOption.equals("3") == true) {
+		} else if (userInputSubOption.equals("3")) {
 			monthlySalary.computeMonthlySalary(inputEmpId);
-		} else if (userInputSubOption.equals("4") == true) {
+		} else if (userInputSubOption.equals("4")) {
 			Main.main(null);
-		}else  if (userInputSubOption.equals("5") == true) {
+		} else if (userInputSubOption.equals("5")) {
 			System.out.println();
-			System.out.println("------------------------------------");
-			System.out.println("Thank you for using MotorPh Portal!");
-
+			System.out.println();
+			System.out.println("||===========================================||");
+			System.out.println("||    Thank you for using MotorPh Portal!    ||");
+			System.out.println("||===========================================||");
 		}
 
-
-
+		// Close BufferedReader
 		br.close();
 	}
-
-
-
 }

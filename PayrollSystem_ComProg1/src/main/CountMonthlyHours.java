@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -65,16 +66,51 @@ public class CountMonthlyHours {
 			timeOutList.add(timeOut);
 		}
 
-		// Scanner for user input
 		Scanner scanner = new Scanner(System.in);
 
-		// Prompt user for input date
 		System.out.println();
 		System.out.println(". . . . . . . . . . . . . . . . . . .");
 		System.out.println();
-		System.out.println("Please enter the date you \nwant to be included (ex. 25/12/2022):");
-		String inputDate = scanner.nextLine();
-		ArrayList<String> monthDays = calendarDates.getDatesOfTheMonth(inputDate);
+
+		// Add error handling for date input format and validity
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date inputDate = null;
+		boolean validInputDate = false;
+		do {
+			System.out.print("Please enter the date you want to be included (ex. 25/12/2022): ");
+			String inputDateString = scanner.nextLine();
+			try {
+				// Parse the input date
+				inputDate = dateFormat.parse(inputDateString);
+
+				// Validate the parsed date
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(inputDate);
+				int day = calendar.get(Calendar.DAY_OF_MONTH);
+				int month = calendar.get(Calendar.MONTH) + 1; // January is 0
+				int year = calendar.get(Calendar.YEAR);
+
+				// Check if day, month, and year are within valid ranges
+				if (day != Integer.parseInt(inputDateString.substring(0, 2)) ||
+						month != Integer.parseInt(inputDateString.substring(3, 5)) ||
+						year != Integer.parseInt(inputDateString.substring(6))) {
+					throw new ParseException("Invalid date", 0);
+				}
+
+				// Check for valid month range (1 to 12) and day range based on month
+				if (month < 1 || month > 12 || day < 1 || day > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+					throw new ParseException("Invalid date", 0);
+				}
+
+				validInputDate = true;
+			} catch (ParseException | NumberFormatException | IndexOutOfBoundsException e) {
+				System.out.println("\nInvalid date format or value. Please follow the format dd/mm/yyyy and ensure the date is valid.\n");
+			}
+		} while (!validInputDate);
+
+		String inputDateStr = dateFormat.format(inputDate); // Convert Date object to String
+
+		ArrayList<String> monthDays = calendarDates.getDatesOfTheMonth(inputDateStr);
 
 		// Iterate over each date of the month
 		System.out.println();
@@ -160,7 +196,7 @@ public class CountMonthlyHours {
 		System.out.println(".  2. Compute for this employee's Weekly Hours & Weekly Salary    .");
 		System.out.println(".  3. Compute Net Monthly Salary                                  .");
 		System.out.println(".  4. Go back to Main menu                                        .");
-		System.out.println(".  5. None                                                        .");
+		System.out.println(".  5. Exit                                                        .");
 		System.out.println(".                                                                 .");
 		System.out.println(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
 		System.out.println();
@@ -178,8 +214,10 @@ public class CountMonthlyHours {
 			Main.main(null);
 		} else if (userInputSubOption.equals("5") == true) {
 			System.out.println();
-			System.out.println("------------------------------------");
-			System.out.println("Thank you for using MotorPh Portal!");
+			System.out.println();
+			System.out.println("||===========================================||");
+			System.out.println("||    Thank you for using MotorPh Portal!    ||");
+			System.out.println("||===========================================||");
 		}
 
 		// Close BufferedReader

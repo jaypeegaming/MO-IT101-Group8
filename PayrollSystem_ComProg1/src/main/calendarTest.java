@@ -23,7 +23,6 @@ public class calendarTest {
 		scanner.close();
 	}
 
-
 	// Method to get the list of dates of the month for a given input date
 	public static ArrayList<String> getDatesOfTheMonth(String inputDate) {
 		ArrayList<String> daysOfTheMonthList = new ArrayList<String>();
@@ -47,11 +46,8 @@ public class calendarTest {
 			cal.add(Calendar.DAY_OF_MONTH, 1);
 		}
 
-		System.out.print(daysOfTheMonthList);
-
 		return daysOfTheMonthList;
 	}
-
 
 	// Method to get the list of dates of the week for a given input date
 	public static ArrayList<String> getDatesOfTheWeek(String inputDate) {
@@ -74,7 +70,6 @@ public class calendarTest {
 			daysOfTheWeekList.add(fmt.format(calendar.getTime()));
 		}
 
-		System.out.print(daysOfTheWeekList);
 		return daysOfTheWeekList;
 	}
 }
